@@ -10,6 +10,8 @@ urlpatterns = [ # ex: /polls/
     # ex: /polls/5/results/
     url(r'^(?P<pk>[0-9]+)/results/$', views.ResultsView.as_view(), name='results'),
     # ex: /polls/5/vote/
+    url(r'^(?P<question_id>[0-9]+)/resultData/$', views.resultData, name='resultData'),
+
     url(r'^(?P<question_id>[0-9]+)/vote/$', views.vote, name='vote'),
 
 ]

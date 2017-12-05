@@ -11,6 +11,7 @@ from .models import Question, Choice
 from django.urls import reverse
 from django.views import generic
 from django.utils import timezone
+from django.http import JsonResponse
 class IndexView(generic.ListView):
     template_name = 'polls/index.html'
     context_object_name = 'latest_question_list'
@@ -30,6 +31,12 @@ class DetailView(generic.DetailView):
 class ResultsView(generic.DetailView):
     model = Question
     template_name = 'polls/results.html'
+
+class DetailsView(generic.DetailView):
+    model=Question
+    template_name='polls/details.html'
+    
+
 def vote(request,question_id):
     question = get_object_or_404(Question, pk=question_id)
     try:
@@ -43,4 +50,10 @@ def vote(request,question_id):
         selected_choice.votes += 1
         selected_choice.save()
         return HttpResponseRedirect(reverse('polls:results', args=(question.id,)))
+def resultData(request,question_id):
+     question = get_object_or_404(Question, pk=question_id)
+     choices = question.choice_set.all()
+     votes = [choice.votes for choice in choices]
+     return JsonResponse({ 'vote': votes })
+
 
